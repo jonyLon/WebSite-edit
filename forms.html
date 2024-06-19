@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Розетка</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/site.css" rel="stylesheet"/>
+    <script src="/js/header.js"></script>
+
+</head>
+<body>
+<script> loadDOM("_header.html"); </script>
+<div class="container">
+    <h1 class="text-center">Реєстрація користувача</h1>
+    <div class="row">
+        <form class="col-md-6 offset-md-3" id="needs-validation" novalidate>
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label for="lastName" class="form-label">Прізвище</label>
+                    <input type="text" class="form-control" id="lastName" aria-describedby="emailHelp"
+                           pattern="^[a-zA-Z]+$|^[\u0400-\u04FF]+$" required>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label for="name" class="form-label">Ім'я</label>
+                    <input type="text" class="form-control" id="name" aria-describedby="emailHelp"
+                           pattern="^[a-zA-Z]+$|^[\u0400-\u04FF]+$" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label for="phone" class="form-label">Телефон</label>
+                    <input type="text" class="form-control" id="phone"
+                           placeholder="+XX(XXX) XX-XX-XXX"
+                           pattern="^\+\d{2}\(\d{3}\) \d{2}-\d{2}-\d{3}$" required
+                           aria-describedby="emailHelp">
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label for="email" class="form-label">Еллектронна пошта</label>
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                           pattern="^[^ ]+@[^ ]+\.[a-z]{2,3}$"
+                           required>
+                </div>
+            </div>
+
+            <div class="row d-flex align-items-center">
+                <div class="col-md-3">
+                    <label for="image" class="form-label">
+                        <img src="/img/no-photo.png" id="imagePreview" alt="фото" width="100%">
+                    </label>
+                </div>
+                <div class="mb-3 col-md-9">
+                    <input type="file" class="form-control" id="image" accept="image/*" aria-describedby="emailHelp" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Пароль</label>
+                <input type="password" class="form-control" id="exampleInputPassword1"
+                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                       required>
+                <div class="invalid-feedback">
+                    Будь ласка введіть корректно пароль. Приклад паролю: Aa1!example.
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-success me-2">Реєстрація</button>
+                <button type="reset" class="btn btn-primary">Скасувать</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script> loadDOM("_messageDialog.html"); </script>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/imask.js"></script>
+<script src="/js/forms.js"></script>
+</body>
+</html>

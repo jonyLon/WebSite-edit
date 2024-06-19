@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Розетка</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/site.css" rel="stylesheet"/>
+    <script src="/js/header.js"></script>
+
+</head>
+<body style="background-color: rgb(128, 127, 127);">
+<script> loadDOM("_header.html"); </script>
+<div class="conteiner d-flex align-items-center justify-content-center">
+    <div class="card p-3" id="user-profile">
+        <img id="profile-pic" src="" alt="Profile Picture" class="card-img" style="min-width: 375px; max-width: 375px;">
+        <div class="card-body">
+            <h2 class="card-title m-2 mb-3">Профіль користувача</h2>
+            <p class="card-text">Email: <span id="profile-email"></span></p>
+            <p class="card-text">Прізвище: <span id="profile-surname"></span></p>
+            <p class="card-text">Ім'я: <span id="profile-name"></span></p>
+            <p class="card-text">Телефон: <span id="profile-phone"></span></p>
+        </div>
+    </div>
+</div>
+
+
+<script src="/js/profile.js"></script>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

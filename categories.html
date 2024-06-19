@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Розетка</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/site.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/bootstrap-icons/font/bootstrap-icons.min.css">
+    <script src="/js/header.js"></script>
+</head>
+<body>
+<script> loadDOM("_header.html"); </script>
+<div class="container">
+    <h1 class="text-center">Список категорій</h1>
+    <a href="/category_create.html" class="btn btn-success">Додати</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Фото</th>
+            <th scope="col">Назва</th>
+            <th scope="col">Опис</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody id="categories">
+
+        </tbody>
+    </table>
+
+</div>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/axios.min.js"></script>
+<script>
+    const loadData = () => {
+        const server = "https://pd322.itstep.click/";
+        // const server = "http://127.0.0.1:5094/";
+        const url = server+"api/Category/CategoryGetAsync";
+        const categories = document.getElementById("categories");
+        const defaultImage = "https://static.thenounproject.com/png/4974686-200.png";
+        categories.innerHTML="";
+        axios.get(url)
+            .then(resp => {
+                const {data} = resp;
+                data.forEach(cat => {
+                    if(cat.imagePath==null)
+                        cat.imagePath = defaultImage;
+                    else {
+                        cat.imagePath=server+"images/320_"+cat.imagePath;
+                    }
+                    const content = `
+                    <tr>
+                        <th scope="row">${cat.id}</th>
+                        <td>
+                            <img src = "${cat.imagePath}" width="75"/>
+                        </td>
+                        <td>${cat.name}</td>
+                        <td>${cat.description}</td>
+                        <td>
+                            <a href="/category_update.html?id=${cat.id}">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    `;
+                    categories.innerHTML+=content;
+                });
+            });
+    }
+    window.addEventListener("load", () => {
+        loadData();
+    });
+</script>
+</body>
+</html>
