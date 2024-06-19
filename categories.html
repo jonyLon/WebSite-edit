@@ -1,75 +1,105 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title>Розетка</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="css/site.css" rel="stylesheet"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/bootstrap-icons/font/bootstrap-icons.min.css">
     <script src="/js/header.js"></script>
+    <style>
+        dialog {
+            border-radius: 10px;
+        }
+    </style>
 </head>
+
 <body>
-<script> loadDOM("_header.html"); </script>
-<div class="container">
-    <h1 class="text-center">Список категорій</h1>
-    <a href="/category_create.html" class="btn btn-success">Додати</a>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Фото</th>
-            <th scope="col">Назва</th>
-            <th scope="col">Опис</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody id="categories">
+    <script> loadDOM("_header.html"); </script>
+    <div class="container">
 
-        </tbody>
-    </table>
+        <h1 class="text-center">Список категорій</h1>
+        <a href="/category_create.html" class="btn btn-success">Додати</a>
+        <dialog data-modal>
+            <h6>Ви точно хочете видалити категорію?</h6>
+            <button class="my-2 btn btn-danger float-right" data-delete>Так</button>
+            <button class="my-2 btn btn-primary float-right" data-close-modal>Ні</button>
+        </dialog>
+        <div class="row row-cols-md-3 g-4 p-5" id="cards"></div>
+    </div>
 
-</div>
-<script src="/js/bootstrap.bundle.min.js"></script>
-<script src="/js/axios.min.js"></script>
-<script>
-    const loadData = () => {
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script>
         const server = "https://pd322.itstep.click/";
         // const server = "http://127.0.0.1:5094/";
-        const url = server+"api/Category/CategoryGetAsync";
-        const categories = document.getElementById("categories");
+        const url = server + "api/Category/CategoryGetAsync";
+        const categories = document.getElementById("cards");
         const defaultImage = "https://static.thenounproject.com/png/4974686-200.png";
-        categories.innerHTML="";
+        categories.innerHTML = "";
         axios.get(url)
             .then(resp => {
-                const {data} = resp;
+                const { data } = resp;
                 data.forEach(cat => {
-                    if(cat.imagePath==null)
+                    if (cat.imagePath == null)
                         cat.imagePath = defaultImage;
                     else {
-                        cat.imagePath=server+"images/320_"+cat.imagePath;
+                        cat.imagePath = server + "images/320_" + cat.imagePath;
                     }
                     const content = `
-                    <tr>
-                        <th scope="row">${cat.id}</th>
-                        <td>
-                            <img src = "${cat.imagePath}" width="75"/>
-                        </td>
-                        <td>${cat.name}</td>
-                        <td>${cat.description}</td>
-                        <td>
-                            <a href="/category_update.html?id=${cat.id}">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    `;
-                    categories.innerHTML+=content;
+                        <div class="col p-3">
+                            <div class="card">
+                                <img src="${cat.imagePath}" class="card-img-top" style="aspect-ratio: 12 / 9;" alt="Image">
+                                <div class="card-body">
+                                <h5 class="card-title">${cat.name}</h5>
+                                <p class="card-text">${cat.description}</p>
+                                <a  class="btn m-2 open-modal btn-danger" data-index="${cat.id}"  style="float:right">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                                <a href="/category_update.html?id=${cat.id}" class="btn btn-primary m-2" style="float:right">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+
+                            </div>
+                        </div>
+                        </div>`;
+                    categories.innerHTML += content;
                 });
+
+                const closeBtn = document.querySelector("[data-close-modal]")
+                const modal = document.querySelector("[data-modal]")
+                const openBtns = document.querySelectorAll(".open-modal")
+                const deleteBtn = document.querySelector("[data-delete]")
+                openBtns.forEach((openBtn) => {
+                    openBtn.addEventListener('click', () => {
+                        const index = openBtn.getAttribute("data-index");
+                        deleteBtn.setAttribute("data-index", index);
+                        modal.showModal();
+                    });
+                });
+                deleteBtn.addEventListener('click', () => {
+                    const id = deleteBtn.getAttribute("data-index");
+                    console.log(id);
+                    const durl = server + "api/Category/DeleteCategoryByID/" + id
+                    axios.delete(durl)
+                        .then(response => {
+                            window.location.href = "categories.html"
+                        })
+                        .catch(error => {
+                            console.error('There was an error deleting the resource!', error);
+                            alert('Failed to delete resource');
+                        });
+                    modal.close();
+                })
+                closeBtn.addEventListener('click', () => {
+                    modal.close();
+                })
             });
-    }
-    window.addEventListener("load", () => {
-        loadData();
-    });
-</script>
+
+
+
+    </script>
 </body>
+
 </html>
